@@ -1,0 +1,55 @@
+1. My initial approach was to recursively add pattern to function. But it seems
+this is impossible in functional programming. Saw Patrcia's post on Piazza
+saying "write a helper function, who takes in the hw1-style rules, and a 
+nonterminal symbol, as inputs; that function will be your production function,
+its outputs are the list of the right-hand-side." It took me a while to
+understand what she meant until I noticed currying this helper function she
+mentioned will return the production function.
+
+2. I saw an example of traversing a binary tree using recursion. Now the parse
+tree may not be binary. So I introduced another recursion for traversing the
+list of child node.
+
+3. The basic idea is similar to 2. I created two recursive functions. One to 
+iterate over the alternative list. The other to iterate over the right hand 
+side. However, my initial implementation somehow stops right hand side iteration
+whenever there is token that matched. For example, given ["9";"+";"$";"1";"+"], 
+my make_matcher claimed ["9"] is the prefix instead of ["9";"+";"$";"1"] (i.e. 
+matched "9" and immediately stopped exploreation). Then I noticed I must 
+propagate what acceptor returns for right most token to left most token. See 
+comments in the code for details.
+
+4. The first thing I thought is that I could use the function from 3. But 3 only
+returns the suffix, so I had to modify it a bit to return the rules that were 
+used. Also, passed in an acceptor that only accepts empty suffix because 
+parse_tree is avaiable only if the entire fragment is parsable. Now the problem 
+is how to convert the traces of rules applied to the a parse tree. The key idea 
+for building a parse tree from traces is to again, have two recursive functions.
+One to go down the tree, the other to traverse the children. The tricky part of 
+this is that the children on the right must know what traces were already used 
+by children on the left. Thus, the helper function must also return the unused 
+traces in addition to the parse tree it builds.
+
+5. I used if statement grammar from the book.
+
+6. I used sample test cases of make_matcher
+
+7. My answer to this question is a little bit complicated. My make_parser does
+is not written in terms of make_matcher, but using modification of make_matcher.
+Specifically, I added some code to keep track of rules applied and return it
+in addition to the suffix. I didn't want my make_matcher to do extra work
+because make_matcher could be called stand alone (i.e. not called through 
+make_parser). Also I wanted each function to be self-contained (i.e. not 
+depending on other function). So there are some duplications, but performance 
+should be better because no extra work made for make_parser function.
+
+There is a weaknesses in my solution. One is obviously the performance issue 
+because it's iterating through every possible combinations with DFS fashion. 
+But this is not a big deal. A real problem is that there could be an infinite
+loop for some grammars. In particular, this happens when a grammar is recursive.
+For example, consider this grammar:
+  Expr -> Expr + Expr
+  Expr -> 1 | 2 | 3 
+This grammar is valid. We can express something like 1 + 2 with this grammar.
+However, based on how my make_matcher/make_parser is implemented, this results 
+in infinite loop because it will keep decomposing Expr recursively forever.

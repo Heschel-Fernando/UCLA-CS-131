@@ -1,0 +1,31 @@
+Illustrate the performance difference on a test case of your own design
+
+command: speedup(Ratio).
+comment: tower is 2.2 times faster than plain_tower.
+
+test case I used:
+N = 5
+T = _
+C = counts([3, 2, 2, 2, 1],
+           [1, 3, 2, 2, 5],
+	   [3, 3, 2, 3, 1],
+           [1, 2, 2, 3, 3])
+
+result:
+Ratio = 2.1564245810055866
+
+
+
+
+
+
+Report the ambiguous puzzle you found.
+
+command: ambiguous(N, C, T1, T2).
+comment: This will give us all ambiguous puzzles. Below is one of them.
+
+result:
+C = counts([4,2,2,1],[1,2,2,4],[4,2,2,1],[1,2,2,4])
+N = 4
+T1 = [[1,2,3,4],[2,1,4,3],[3,4,1,2],[4,3,2,1]]
+T2 = [[1,2,3,4],[2,4,1,3],[3,1,4,2],[4,3,2,1]]

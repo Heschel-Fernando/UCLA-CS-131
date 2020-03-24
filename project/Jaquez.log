@@ -1,0 +1,208 @@
+SERVING Jaquez on ('127.0.0.1', 11826)
+RECEIVED from ('127.0.0.1', 50657): AT Hill +63060786.86584616 kiwi.cs.ucla.edu +34.068930-118.445127 1520023934.918963997
+CONNECTIING to Hill
+CONNECTIING to Singleton
+CONNECTED to Hill
+SEND to Hill: AT Hill +63060786.86584616 kiwi.cs.ucla.edu +34.068930-118.445127 1520023934.918963997
+DISCONNECTED from Hill
+CONNECTED to Singleton
+SEND to Singleton: AT Hill +63060786.86584616 kiwi.cs.ucla.edu +34.068930-118.445127 1520023934.918963997
+DISCONNECTED from Singleton
+RECEIVED from ('127.0.0.1', 50664): AT Hill +63060786.86584616 kiwi.cs.ucla.edu +34.068930-118.445127 1520023934.918963997
+RECEIVED from ('127.0.0.1', 50675): AT Smith -416939197.5847869 one.cs.ucla.edu +34.068930-118.445127 2000023934.918963997
+CONNECTIING to Hill
+CONNECTIING to Singleton
+CONNECTED to Hill
+SEND to Hill: AT Smith -416939197.5847869 one.cs.ucla.edu +34.068930-118.445127 2000023934.918963997
+DISCONNECTED from Hill
+CONNECTED to Singleton
+SEND to Singleton: AT Smith -416939197.5847869 one.cs.ucla.edu +34.068930-118.445127 2000023934.918963997
+DISCONNECTED from Singleton
+RECEIVED from ('127.0.0.1', 50679): AT Smith -416939197.5847869 one.cs.ucla.edu +34.068930-118.445127 2000023934.918963997
+RECEIVED from ('127.0.0.1', 50686): IAMAT kiwi.cs.ucla.edu +36.068930-118.445127 3000023934.918963997
+SEND to ('127.0.0.1', 50686): AT Jaquez -1416939186.05769 kiwi.cs.ucla.edu +36.068930-118.445127 3000023934.918963997
+CONNECTIING to Hill
+CONNECTIING to Singleton
+CONNECTED to Hill
+SEND to Hill: AT Jaquez -1416939186.05769 kiwi.cs.ucla.edu +36.068930-118.445127 3000023934.918963997
+DISCONNECTED from Hill
+CONNECTED to Singleton
+SEND to Singleton: AT Jaquez -1416939186.05769 kiwi.cs.ucla.edu +36.068930-118.445127 3000023934.918963997
+DISCONNECTED from Singleton
+RECEIVED from ('127.0.0.1', 50691): AT Jaquez -1416939186.05769 kiwi.cs.ucla.edu +36.068930-118.445127 3000023934.918963997
+RECEIVED from ('127.0.0.1', 50689): AT Jaquez -1416939186.05769 kiwi.cs.ucla.edu +36.068930-118.445127 3000023934.918963997
+RECEIVED from ('127.0.0.1', 50707): AT Campbell -2416939176.3978243 one.cs.ucla.edu +34.068930-119.445127 4000023934.918963997
+RECEIVED from ('127.0.0.1', 50710): AT Campbell -2416939176.3978243 one.cs.ucla.edu +34.068930-119.445127 4000023934.918963997
+CONNECTIING to Hill
+CONNECTIING to Singleton
+CONNECTED to Hill
+SEND to Hill: AT Campbell -2416939176.3978243 one.cs.ucla.edu +34.068930-119.445127 4000023934.918963997
+DISCONNECTED from Hill
+CONNECTED to Singleton
+SEND to Singleton: AT Campbell -2416939176.3978243 one.cs.ucla.edu +34.068930-119.445127 4000023934.918963997
+DISCONNECTED from Singleton
+RECEIVED from ('127.0.0.1', 50716): AT Singleton -3416939167.174672 two.cs.ucla.edu +34.068930-118.445127 5000023934.918963997
+CONNECTIING to Hill
+CONNECTIING to Singleton
+CONNECTED to Hill
+SEND to Hill: AT Singleton -3416939167.174672 two.cs.ucla.edu +34.068930-118.445127 5000023934.918963997
+DISCONNECTED from Hill
+CONNECTED to Singleton
+SEND to Singleton: AT Singleton -3416939167.174672 two.cs.ucla.edu +34.068930-118.445127 5000023934.918963997
+DISCONNECTED from Singleton
+RECEIVED from ('127.0.0.1', 50726): AT Singleton -3416939167.174672 two.cs.ucla.edu +34.068930-118.445127 5000023934.918963997
+RECEIVED from ('127.0.0.1', 50733): WHATSAT kiwi.cs.ucla.edu 10 1
+SEND to ('127.0.0.1', 50733): AT Jaquez -1416939186.05769 kiwi.cs.ucla.edu +36.068930-118.445127 3000023934.918963997
+{
+    "html_attributions": [],
+    "next_page_token": "CqQCFQEAAHXGFQARbIvt4YDCU_L8IZYrGp5XyzviHrhs1497rzdWZcWvb8CVXLyI8VxwO2lb42dGcjzXvyovd-1UbQRDq73dTkOleF-sp12asbuwuGMt0q-MBpQbyWUAs_rZdTWZxjGnypQV7RLmEfLGqzQuvx7UdEX2uqAgYBZ10yfj2qzBXC1mHJBXtiVrhlbK40wMi0wuxFOipyVnYWMJcFEGNd1bJxKOOjjxoEfrjMIgEZBP5tQzWGPwDrVhvAhyvdp-WvalownBPLb-FZcXlfgcTFCkZ7AztryL9behko2YrJN0694D-JM2iL4yGEisFR8gw_NdKOi0n4EuY-HGAt1RQt7qQhJdUNiK1iUqw04vio5QQB2NYDDvEEX1co1CKuqIdBIQdoFOn8O5AwXcF6Fw6swlGxoUlmeGUjaGLdbm0gq8ABRtGsBXfpA",
+    "results": [
+        {
+            "geometry": {
+                "location": {
+                    "lat": 36.1041062,
+                    "lng": -118.5279114
+                },
+                "viewport": {
+                    "northeast": {
+                        "lat": 36.1131208,
+                        "lng": -118.511904
+                    },
+                    "southwest": {
+                        "lat": 36.0950906,
+                        "lng": -118.5439188
+                    }
+                }
+            },
+            "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
+            "id": "c505401de79295f467b481495a524bac79ae17fb",
+            "name": "Ponderosa",
+            "photos": [
+                {
+                    "height": 2576,
+                    "html_attributions": [
+                        "<a href=\"https://maps.google.com/maps/contrib/112416216709517140341\">Pete Burns</a>"
+                    ],
+                    "photo_reference": "CmRaAAAAPvyKOhZS1BxUv-vkDyJ8CkDG7_CbCqqpCxTjlX5Ea8b2t5faMS_gwN2QFsJ70AhVZ0HMSLLvijmvEKLadHJnoyheiFQ8oRv9n653p2dn5sJCm9SLwK3ruVHetHuoJu_XEhARlY0QWcdWxyTNhwB4DnByGhRylRhw3TMG-CNz9u3MDo4jHkmV-w",
+                    "width": 1932
+                }
+            ],
+            "place_id": "ChIJRwzHj6sZwIARIC7NGnt_sxA",
+            "reference": "ChIJRwzHj6sZwIARIC7NGnt_sxA",
+            "scope": "GOOGLE",
+            "types": [
+                "locality",
+                "political"
+            ],
+            "vicinity": "Ponderosa"
+        }
+    ],
+    "status": "OK"
+}
+
+
+RECEIVED from ('127.0.0.1', 50748): WHATSAT one.cs.ucla.edu 10 1
+SEND to ('127.0.0.1', 50748): AT Campbell -2416939176.3978243 one.cs.ucla.edu +34.068930-119.445127 4000023934.918963997
+{
+    "html_attributions": [],
+    "results": [
+        {
+            "geometry": {
+                "location": {
+                    "lat": 34.01284029999999,
+                    "lng": -119.3741369
+                },
+                "viewport": {
+                    "northeast": {
+                        "lat": 34.01421673029149,
+                        "lng": -119.3727787197085
+                    },
+                    "southwest": {
+                        "lat": 34.01151876970849,
+                        "lng": -119.3754766802915
+                    }
+                }
+            },
+            "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
+            "id": "8027d668fa32ea23f0a21d415fbeadb03b086d74",
+            "name": "Inspiration Point",
+            "photos": [
+                {
+                    "height": 3492,
+                    "html_attributions": [
+                        "<a href=\"https://maps.google.com/maps/contrib/111977918168031671570\">R Davis</a>"
+                    ],
+                    "photo_reference": "CmRaAAAAh0YLhxFxnANnX9Wj4cQbDgQIRMdja6v89esfchYKdcohfME1nQ_mGrqXQdxY2Wed8UEHsw9zthj8FFQ-0oRmwDV8V99OX3F9XueNCLGbzVvNXyALlr8fvIc0A8lYmOilEhDbO1UzDE_24uVF-ct_DByDGhSvVRsJMD79E-OzbPQljXni6Kqc4A",
+                    "width": 4656
+                }
+            ],
+            "place_id": "ChIJacdh4eJY6IARsVORh3aKMHI",
+            "plus_code": {
+                "global_code": "85622J7G+48"
+            },
+            "rating": 4.9,
+            "reference": "ChIJacdh4eJY6IARsVORh3aKMHI",
+            "scope": "GOOGLE",
+            "types": [
+                "tourist_attraction",
+                "point_of_interest",
+                "establishment"
+            ],
+            "user_ratings_total": 37,
+            "vicinity": "Ventura"
+        }
+    ],
+    "status": "OK"
+}
+
+
+RECEIVED from ('127.0.0.1', 50764): WHATSAT two.cs.ucla.edu 10 1
+SEND to ('127.0.0.1', 50764): AT Singleton -3416939167.174672 two.cs.ucla.edu +34.068930-118.445127 5000023934.918963997
+{
+    "html_attributions": [],
+    "next_page_token": "CqQCFQEAALpS7ZP0IeCp1gwzWs2OniZuNHt-eM5TYwhhcE6_aN8SgS7i1Ec0b6eAI4KGByqAWsrgvcwe_R4oTB9wW096yfbXHlsoMOv0bKxZpiKIFuL7MzOTJKIjshH-pr1E7rz0iS1V-j-YsqGjhpCLJsq97uO4CG4lgWIVAgLwbBy-eElNCUD98fxiSpfYvMilgwpMs5V1dRZe9zYQt7loIY9Avrp0eqnlHr5ADsPyD-arsR_LDHOy2qMCdori837-GUFQ38sABk6irriILqOBEvShX3hFiUShQ_WybzEYGfvZYh_7f7FSBW0l-eilkacZRZdJUfvRkdKu18g3ELvRfQimT1f5gUKlxiQVvZoDv9SNNj74RQl_CG2QsF1pcte4JAnx5RIQewCWYl0LxU3eNtkUSvvW0xoUoxrdPD2xZa1DhvwRiOCh0QaNaDY",
+    "results": [
+        {
+            "geometry": {
+                "location": {
+                    "lat": 34.0522342,
+                    "lng": -118.2436849
+                },
+                "viewport": {
+                    "northeast": {
+                        "lat": 34.3373061,
+                        "lng": -118.1552891
+                    },
+                    "southwest": {
+                        "lat": 33.7036519,
+                        "lng": -118.6681759
+                    }
+                }
+            },
+            "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
+            "id": "7f7b7d8118ae8db8ed3f541159ac928c484d12ad",
+            "name": "Los Angeles",
+            "photos": [
+                {
+                    "height": 721,
+                    "html_attributions": [
+                        "<a href=\"https://maps.google.com/maps/contrib/111908544265113207087\">Harsh Kumar</a>"
+                    ],
+                    "photo_reference": "CmRaAAAAPw_WuRtoHmFE1Xo7AMCSGU-IibuXYrKZn4V2TmjeRFOkLUCnYMNsD9qz-ZlB8udyGCq9iiqd2SSCKEOwM9URQyPjFQ-I3-zRiicCYXDVlk01oRSdtVZlUw1OpamYP3KwEhBhA-DZGXUio2IWzEAV44YwGhTOg6I3SU6HjYI_zHxJpu2dEk0yCA",
+                    "width": 1080
+                }
+            ],
+            "place_id": "ChIJE9on3F3HwoAR9AhGJW_fL-I",
+            "reference": "ChIJE9on3F3HwoAR9AhGJW_fL-I",
+            "scope": "GOOGLE",
+            "types": [
+                "locality",
+                "political"
+            ],
+            "vicinity": "Los Angeles"
+        }
+    ],
+    "status": "OK"
+}
+
+

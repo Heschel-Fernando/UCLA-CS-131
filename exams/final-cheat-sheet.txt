@@ -1,0 +1,959 @@
+============ Start Scheme ============
+
+10 (20 minutes).
+   Write a Scheme procedure (count-pairs-mcguffin OBJ PROC) that recursively
+   searches OBJ for a "McGuffin", namely, a subobject OBJ1 such that OBJ1 is not
+   a pair and (PROC OBJ1) returns true.  If count-pairs-mcguffin finds a
+   McGuffin, it immediately returns OBJ; otherwise, it returns a nonnegative
+   integer that counts the number of pairs that it found in OBJ.  The search
+   should be depth-first, left-to-right.  Only pairs are descended through
+   recursively; you need not worry about other recursive objects like vectors. 
+
+For example:
+
+(count-pairs-mcguffin '(a b c) symbol?)  ===>  a
+(count-pairs-mcguffin '(a b 2) number?)  ===>  2
+(count-pairs-mcguffin '(a b c) number?)  ===>  3
+(count-pairs-mcguffin '(a b c) boolean?) ===>  3
+(count-pairs-mcguffin '(a b c) pair?)    ===>  3
+(count-pairs-mcguffin '(#f a b c) (lambda (x) x)) ===>  a
+(count-pairs-mcguffin '(0.1 b c) symbol?) ===> b
+(count-pairs-mcguffin '((0.1 a) b c) symbol?) ===> a
+
+Your implementation should use a continuation, so that when the McGuffin is 
+found, it can be returned right away.
+
+(see https://en.wikipedia.org/wiki/MacGuffin for what a McGuffin is)
+
+[
+This does not keep track of the numbers you checked…
+Consider writing the entire function, and place call/cc where it needs to be.
+
+(define mcGuffin
+  (lambda (ls pred)
+    (call/cc
+      (lambda (break) 
+        (let f ([ls ls] [count 0])
+          (cond
+            [(null? ls) count]
+            [(list? (car ls))
+              (
+                (f (car ls) -1)
+                (f (cdr ls) (+ count 1))
+              )
+            ]
+            [else
+              (if (pred (car ls)) (break (car ls)) (f (cdr ls) (+ count 1)))
+            ]
+          )
+    ))
+)))
+
+(define (count-pairs-mcguffin obj proc)
+  (mcGuffin obj proc)
+)
+
+
+
+
+
+
+The = predicate is used to check whether two numbers are equal. If you supply it anything else but a number then it will raise an error:
+(= 2 3)     => #f
+(= 2.5 2.5) => #t
+(= '() '()) => error
+
+The eq? predicate is used to check whether its two parameters respresent the same object in memory
+(define x '(2 3))
+(define y '(2 3))
+(eq? x y)         => #f
+(define y x)
+(eq? x y)         => #t
+
+Now depending upon the implementation eq? may or may not return #t for primitive values such as numbers, strings, etc
+(eq? 2 2)     => depends upon the implementation
+(eq? "a" "a") => depends upon the implementation
+
+
+(+ 2    2)
+   |    |
+  \|/  \|/
+   2    2
+
+(+ 2    2)
+   |    |
+  \|/   |
+   2  ---
+
+This is where the eqv? predicate comes into picture. The eqv? is exactly the same as the eq? predicate, except that it will always return #t for same primitive values.
+(eqv? 2 2)     => #t
+(eqv? "a" "a") => depends upon the implementation
+
+Finally we come to the equal? predicate. The equal? predicate is exactly the same as the eqv? predicate, except that it can also be used to test whether two lists, vectors, etc. have corresponding elements which satisfy the eqv? predicate.
+(define x '(2 3))
+(define y '(2 3))
+(equal? x y)      => #t
+(eqv? x y)        => #f
+
+
+
+
+
+(define (prod ls)
+  (call/cc
+    (lambda (k)
+      (let prodf ([ls ls])
+        (cond
+          [(null? ls) 1]
+          [(zero? (car ls)) (k 0)]
+          [else
+            (* (car ls) (prodf (cdr ls)))
+          ]
+        )
+      )
+    )
+  )
+)
+
+
+(define tlist '())
+(define (thr thunk)
+  (set! tlist (append tlist (list thunk)))
+)
+
+(define (start)
+  (let ([next (car tlist)])
+    (set! tlist (cdr tlist))
+    (next)
+  )
+)
+
+(define (yield)
+  (call/cc (lambda (k) (thr k) (start)))
+)
+
+(append (list 1 2) (list 3 4))
+=> '(1 2 3 4)
+
+(define (evenorodd x)
+  (cond
+    [(equal? (modulo x 2) 0) "even"]
+    [else "odd"]
+  )
+)
+
+(length (list 1 2 3)) -> 3  ; count number of elements
+(list-ref (list 1 2 3) 1) -> 2 ; extract by index
+(append (list 1 2 3) (list 3)) -> '(1 2 3)
+(reverse (list 1 2 3)) -> '(3 2 1)
+(member 4 (list 1 2 3)) -> #f
+
+
+(define (list-ref lst n)
+  (if (zero? n)
+    (car lst)
+    (list-ref (cdr lst) (- n 1))
+  )
+)
+
+(map (lambda (x) (* x 2)) (list 1 2 3 4))
+
+; without tail recursion
+(define (map f lst)
+  (cond
+    [(empty? lst) empty]
+    [else
+      (cons (f (car lst)) (map f (cdr lst)))
+    ]
+  )
+)
+
+; with tail recursion
+(define (map f lst)
+  (define (iter lst backward-result)
+    (cond
+      [(empty? lst) (reverse backward-result)]
+      [else
+        (iter (rest lst) (cons (f (first lst) backward-result)))
+      ]
+    )
+  )
+)
+
+; reverse into improper list
+(define (revlist l)
+  (cond
+    [(empty? l) l]
+    [else
+      (cons (revlist (cdr l)) (car l))
+    ]
+  )
+)
+
+(define (remove-consequtive-dups lst)
+  (cond
+    [(empty? lst) empty]
+    [(empty? (rest lst)) lst]
+    [else
+      (let ([h (first lst)] [t (rest lst)])
+        (if (equal? h (first t))
+          (remove-consequtive-dups t)
+          (cons h (remove-consequtive-dups t))
+        )
+      )
+    ]
+  )
+)
+
+
+; implement equal?
+
+(define (atom? x)
+  (and
+    (not (null? x))
+    (not (pair? x))
+  )
+)
+
+(define (equal? a b)
+  (or
+    (and 
+      (atom? a) 
+      (atom? b) 
+      (eq? a b)
+    )
+    (and 
+      (null? a) 
+      (null? b)
+    )
+    (and 
+      (pair? a) 
+      (pair? b) 
+      (equal? (car a) (car b))
+      (equal? (cdr a) (cdr b))
+    )
+  )
+)
+
+
+============ End Scheme ============
+
+
+
+============ Start Prolog ===========
+=/2 triggeres unification
+| ?- X = 5 + 2.
+X = 5 + 2
+yes
+
+is/2 triggers arithmetic evaluation
+| ?- X is 5 + 2
+X = 7
+yes
+
+
+EQUALITY OPERATOR (==) VS EQUALITY UNIFICATION (=)
+The goal term1==term2 succeeds only if term1 is identical to term2.
+• likes(X,prolog)==likes(john,Y). -> no
+• likes(X,prolog)==likes(X,prolog). -> yes 
+
+The goal term1=term2 succeeds only if term1 and term2 unify, i.e. there is
+some way of binding variables to values which would make the terms
+identical.
+• likes(X,prolog)=likes(john,Y). -> X = john Y= prolog -> yes
+
+The = "operator" in Prolog is actually a predicate (with infix notation) =/2 that succeeds when the two terms are unified. Thus X = 2 or 2 = X amount to the same thing, a goal to unify X with 2.
+
+The == "operator" differs in that it succeeds only if the two terms are already identical without further unification. Thus X == 2 is true only if the variable X had previously been assigned the value 2.
+
+
+
+| ?- append([a, b, c], [1, 2, 3], [a,b,c,1,2,3])
+yes
+
+| ?- member(1, [1, 2, 3])
+true ? ;
+no
+
+| ?- member(1, [1, 2, 3])
+true ?          <--- enter
+yes
+
+| ?- reverse([1, 2, 3], [3,2,1]).
+yes
+
+
+| ?- length([1,2,3], 3).
+yes
+
+
+| ?- permutation([1,2,3,4], [3,2,1,4]).
+
+true ? 
+
+yes
+
+
+| ?- maplist(>(5), [1, 2, 3, 4]).
+
+yes
+
+
+% remove element from list
+remove(X, [], []).
+remove(X, [X|TL], Result) :- remove(X, TL, Result).
+remove(X, [H|TL], [H|Result]) :- remove(X, TL, Result).
+
+ismember(E, [E|L]).
+ismember(E, [X|L]) :- E \= X, ismember(E, L).
+
+remove_all(E, [], []).
+remove_all(E, [E|TL], Ans) :- remove_all(E, TL, Ans).
+remove_all(E, [E2|TL], [E2|Ans]) :- E \== E2, remove_all(E, TL, Ans).
+
+
+X \= Y (or =\=, \+): not provable
+
+
+% remove first occurance of E
+remove_first(X, [X|TL], TL).
+remove_first(X, [Y|TL], [Y|Rest]) :- X \== Y, remove_first(X, TL, Rest).
+
+
+% convert list to set
+setify([], []).
+setify([X|XS], [X|Ans]) :- remove_all(X, XS, Rest), setify(Rest, Ans).
+
+
+
+permutation([], []).
+permutation([A|B], [C|D]) :- 
+  length([A|B], Length),
+  length([C|D], Length),
+  member(A, [C|D]),
+  member(C, [A|B]),
+  remove_first(A, [C|D], L2),
+  permutation(B, L2).
+
+
+
+% unique_list with range <= N
+unique_list(List, N) :-
+  length(List, N),
+  elements_between(List, 1, N),
+  all_unique(List).
+
+
+elements_between([], _, _).
+elements_between([H|T], Min, Max) :-
+  between(Min, Max, H),
+  elements_between(T, Min, Max).
+
+
+uniquelist([]).
+uniquelist([F|R]) :- \+ member(F, R), uniquelist(R).
+
+all_unique([]).
+all_unique([H|T]) :- member(H, T), !, fail.
+all_unique([H|T]) :- all_unique(T).
+
+
+7a (5 minutes).  shift_left(L, R) succeeds if R
+is the result of "shifting left" the list L by 1.
+The leading element of L is lost.  For example,
+shift_left([a,b,c], [b,c]).
+
+shift_left([_|R], R).
+
+7b (5 minutes).  shift_right(L, R) is similar,
+except it shifts right.  For example,
+shift_right([a,b,c], [a,b]).
+
+shift_right([_], []).
+shift_right([H|L], [H|R]) :- shift_right(L,R).
+
+7c (5 minutes).  shift_left_circular(L, R) is
+like shift_left, except the leading element of L
+is reintroduced at the right.  For example,
+shift_left_circular([a,b,c], [b,c,a]).
+
+shift_left_circular([H|L], R) :- append(L, [H], R).
+--or--
+shift_left_circular([H|L], R) :- slc(L, H, R).
+slc([], X, [X]).
+slc([Y|L], H, [Y|R]) :- slc(L, H, R).
+
+7d (5 minutes).  shift_right_circular(L, R) is
+similar, except it shifts right.  For example,
+shift_right_circular([a,b,c], [c,a,b]).
+
+shift_right_circular(L,R) :- shift_left_circular(R,L).
+
+
+======== end Prolog ============
+
+
+
+======== Start Python ========
+
+Event Loop: The event loop is the orchestrator of the symphony. It runs tasks one after the other. At any given time, only one of the tasks is running.
+
+As you can imagine, there is a lot of pressure on the active task, since other tasks are waiting for their turn. So, when the active task makes a blocking call, say a network request, and cannot make further progress it gives the control back to the event loop realising that some other task could possibly better utilise the event loop’s time. It also tells the event loop what exactly it is blocked upon, so that when the network response comes, the event loop can consider giving it time to run again.
+
+
+def say_after(delay, what):
+  await asyncio.sleep(delay)
+  print(what)
+
+
+def main():
+  say_after(3, "Hello")
+  say_after(5, "World")
+  task1 = asyncio.create_task(say_after(3, "Hello"))
+  task2 = asyncio.create_task(say_after(5, "World"))
+  await task1
+  await task2
+
+
+====== End Python ======
+
+
+
+===== Start Java =======
+Visibility modifiers in Java
+○ Private means that the variable is only visible within the current class.
+○ The default (just declaring int x) is visible in the current class and in another class
+in the same package.
+○ Protected means that the variable is visible in the current class, in another class
+in the same package, and in other subclasses outside the package.
+○ Public is all of the above plus elsewhere.
+
+
+
+
+
+
+
+====== End Java ==========
+
+
+
+5a (10 minutes).  Can these semantics be
+implemented easily on a machine in which all
+storage is allocated on the stack, or do they
+assume the existence of a heap?  If the former,
+give a nontrivial example and show why the heap
+is not needed for it; if the latter, give an
+example of why a heap is necessary.
+
+Take a look at the rule (fn(x,E),C) -> (x,E,C)
+
+x: formal parameters
+E: expression
+C: context of function's definer
+
+
+The static scoping semantics carry the context of the caller into the
+function body, i.e. all its variable bindings. This assumes existence
+of a heap, since it would not be easy to store a caller's variables
+on the new stack frame of a called function. 
+
+5b (10 minutes).  This question is the same as
+(a), except use the dynamic-scoping semantics.
+
+Take a look at the rule (fn(x,E),C) -> (x,E)
+
+With dynamic scoping, the callee does not carry the caller's context
+into the function body, so it would be easier to allocate on the stack,
+because all the callee's data will live in the callee's stack frame.
+
+
+
+- Call by value
+- Call by reference
+
+void f() {
+  int x = 3;
+  void g(int a, int& b) {
+    b += a;
+    b += x;
+  }
+  plus(4, x);  // x == 14
+}
+
+
+
+- Call by result
+
+void plus(int a, int b, by-result int c) {
+  c = a + b;
+}
+
+void f() {
+  int x = 3;
+  int y = 4;
+  int z;
+  plus(x, y, z);
+}
+
+
+- Call by value-result
+
+void f() {
+  int x = 3;
+  void g(int a, int value-result b) {
+    b += a;
+    b += x;
+  }
+  plus(4, x)  // x == 10
+}
+
+
+- Call by name
+
+Call-by-name could cause a hang if the parameter was a function that 
+changed some global state.  For example,
+
+int count = 0; //global state
+int bar() {
+  count++;
+  if (count > 1) {
+    while (true) { ... }
+  }
+  return 1;
+}
+
+void foo(int a) {
+  printf("%d", a);
+  printf("%d", a);
+}
+
+foo(bar());
+
+
+- Call by need
+
+bool __is_foo_called = false; //global state
+int bar() {
+  if (__is_foo_called) {
+    while (true) { ... }
+  }
+  return 1;
+}
+
+void foo(int a) {
+  __is_foo_called = true;
+  print("%d", a);
+}
+
+foo(bar());
+
+hang for both call-by-need and call-by-name.
+will not hang for call by value
+
+
+
+- Call by macro expansion
+
+== source file ==
+#define MIN(X, Y) (X < Y ? X : Y)
+a = MIN(b, c);
+
+== expanded source ==
+a = b < c ? b : c
+
+
+
+
+==== scope ====
+fun g x = 
+  let
+    val inc = 1;
+    fun f y = y+inc;
+    fun h z =
+      let
+        val inc = 2;
+      in 
+        f z
+    end; 
+  in
+    h x 
+  end;
+
+
+
+
+
+- Garbage Collection (mark and sweep algorithm)
+Mark Phase: When an object is created, its mark bit is set to 0(false). In the Mark phase, we set the marked bit for all the reachable objects (or the objects which a user can refer to) to 1(true).
+Sweeo Phase: As the name suggests it “sweeps” the unreachable objects i.e. it clears the heap memory for all the unreachable objects. All those objects whose marked value is set to false are cleared from the heap memory, for all other objects (reachable objects) the marked bit is set to true.
+
+Advantage: handle cyclic reference
+Disadvantage1: The main disadvantage of the mark-and-sweep approach is the fact that that normal program execution is suspended while the garbage collection algorithm runs.
+
+Disadvantage2: Other disadvantage is that, after the Mark and Sweep Algorithm is run several times on a program, reachable objects end up being separated by many, small unused memory regions (external fragmentation)
+
+- Reference Counting (CPython)
+
+Advantage: garbage are collected immediately when count reaches 0
+Disadvantage1: cannot handle cyclic reference
+Disadvantage2: overhead of updating count
+
+Recent versions of Python do these reference counts, but when the memory gets low, then the conventional mark and sweep is used.
+
+- Copying garbage collector
+prevent memory gragmentation
+
+- Incremental garbage collection
+An incremental GC may be implemented with generational scheme (younger generation has more garbage, so it should be sweeped first), but different methods can be employed to decide which group of objects should be sweeped.
+
+- Generational Garbage Collection
+
+In generational garbage collection, the memory space is divided into different generations (e.g. young generation and old generation). Initially, all the objects would reside on the young generation. However, when a garbage collection cycle happens, objects that survive the garbage collection will be promoted to the older generation.
+
+Garbage collection cycles in the old generation occur less frequent than in the young generation. The key idea behind this approach is that objects that survive the first garbage collection tend to live longer. Thus the frequency of garbage collection can be reduced for objects in the older generations.
+
+- Real time garbage collection
+Real-time garbage collection is for those applications that need to be fast with garbage collection because of the latency requirements. One of the main ideas with real-time GC is that you need to put a hard upper bound on the time it takes for new(). A full fledged garbage collector with new() will take too much time. Every time you call new, system will allocate storage for you, and then does a couple of instructions (only a couple because of the hard upper bound) that looks for garbage of collect. If you make enough new() calls, then you’ll eventually garbage collect everything.
+
+- Conservative Garbage Collection
+In C,C++ we don’t know the roots. A conservative garbage collector is one that does not know whether or not a given word is a pointer. If the word points into an allocated heap block then the garbage collector conservatively assumes that the word is a pointer and, therefore, does not recycle that heap block or anything considered to be reachable from it.
+
+
+
+
+===== Start OCaml ========
+Define a function (reverse_curry2 x)
+e.g. ((reverse_curry2 (-)) 3 5) -> 2
+
+let reverse_curry2 x op1 op2 = x op2 op1;;
+val reverse_curry2 : ('a -> 'b -> 'c) -> 'b -> 'a -> 'c = <fun>
+
+# without syntactic sugar
+let reverse_curry2 x = fun op1 -> fun op2 -> x op2 op1;;
+
+TODO: Midterm Winter 2019
+what does (reverse_curry2 reverse_curry2)?
+
+
+
+# rewrite each of the following OCaml definitions
+let rec f x = f x
+==> let rec f0 x0 = f0 x0
+
+
+type ('nonterminal, 'terminal) symbol =
+  | N of 'nonterminal
+  | T of 'terminal
+
+==> type ('nonterminal0, 'terminal0) symbol =
+      | N of 'nonterminal0
+      | T of 'terminal0
+
+
+let a a a = function | (_,a,_) -> a
+==> let a0 a1 a2 = function | (_,a3,_) -> a3
+
+
+# rewrite without syntactic sugar
+let rec f x = f x
+==> let rec f = fun x -> f x
+
+type ('nonterminal, 'terminal) symbol =
+  | N of 'nonterminal
+  | T of 'terminal
+
+==> not possible
+
+let a a a = function | (_,a,_) -> a
+==> let a = fun a -> fun a -> fun (_,a,_) -> a
+
+
+# return types
+let rec f x = f x
+-> 'a -> 'b
+
+type ('nonterminal, 'terminal) symbol =
+  | N of 'nonterminal
+  | T of 'terminal
+-> ('nonterminal, 'terminal) symbol
+
+let a a a = function | (_,a,_) -> a
+==> 'a -> 'b -> ('c * 'd * 'e) -> 'd
+
+
+# check_perm A B returns true if A is a permutation of B
+let reverse ls = 
+  let rec helper ls acc = 
+    match ls with
+    | [] -> acc
+    | head::tail -> helper tail (head::acc)
+  in 
+  helper ls []
+;;
+
+let remove a ls =
+  let rec helper ls acc =  
+    match ls with
+    | [] -> None
+    | head::tail -> 
+      if head == a
+      then Some (List.append (reverse acc) tail)
+      else helper tail (head::acc)
+  in
+  helper ls []
+;;
+
+let rec check_perm a b = 
+  match a, b with
+    | [], [] -> true
+    | _, [] -> false
+    | [], _ -> false
+    | ahead::atail, _ ->
+      (* ahead must in b *)
+      match (remove ahead b) with
+        | None -> false
+        | Some newB -> check_perm atail newB
+;;
+
+
+==== End OCaml =======
+
+
+===== Start grammar ====
+<HW1 style grammar>
+
+type ('nonterminal, 'terminal) symbol =
+  | N of 'nonterminal
+  | T of 'terminal
+
+type awksub_nonterminals =
+  | Expr | Lvalue | Incrop | Binop | Num
+
+let awksub_rules =
+   [Expr, [T"("; N Expr; T")"];
+    Expr, [N Num];
+    Expr, [N Expr; N Binop; N Expr];
+    Expr, [N Lvalue];
+    Expr, [N Incrop; N Lvalue];
+    Expr, [N Lvalue; N Incrop];
+    Lvalue, [T"$"; N Expr];
+    Incrop, [T"++"];
+    Incrop, [T"--"];
+    Binop, [T"+"];
+    Binop, [T"-"];
+    Num, [T"0"];
+    Num, [T"1"];
+    Num, [T"2"];
+    Num, [T"3"];
+    Num, [T"4"];
+    Num, [T"5"];
+    Num, [T"6"];
+    Num, [T"7"];
+    Num, [T"8"];
+    Num, [T"9"]]
+
+let awksub_grammar = Expr, awksub_rules
+
+
+<HW2 style grammar>
+
+
+type awksub_nonterminals =
+  | Expr | Term | Lvalue | Incrop | Binop | Num
+
+let awkish_grammar =
+  (Expr,
+   function
+     | Expr ->
+         [[N Term; N Binop; N Expr];
+          [N Term]]
+     | Term ->
+   [[N Num];
+    [N Lvalue];
+    [N Incrop; N Lvalue];
+    [N Lvalue; N Incrop];
+    [T"("; N Expr; T")"]]
+     | Lvalue ->
+   [[T"$"; N Expr]]
+     | Incrop ->
+   [[T"++"];
+    [T"--"]]
+     | Binop ->
+   [[T"+"];
+    [T"-"]]
+     | Num ->
+   [[T"0"]; [T"1"]; [T"2"]; [T"3"]; [T"4"];
+    [T"5"]; [T"6"]; [T"7"]; [T"8"]; [T"9"]])
+
+<hw2 solution weakness>
+There is a weaknesses in my solution. One is obviously the performance issue 
+because it's iterating through every possible combinations with DFS fashion. 
+But this is not a big deal. A real problem is that there could be an infinite
+loop for some grammars. In particular, this happens when a grammar is recursive.
+For example, consider this grammar:
+  Expr -> Expr + Expr
+  Expr -> 1 | 2 | 3 
+This grammar is valid. We can express something like 1 + 2 with this grammar.
+However, based on how my make_matcher/make_parser is implemented, this results 
+in infinite loop because it will keep decomposing Expr recursively forever.
+
+<matcher/acceptor examples>
+
+let accept_all string = Some string;;
+
+let accept_empty_suffix = function
+  | _::_ -> None
+  | x -> Some x ;;
+
+let match_empty frag accept = accept frag ;; # match empty prefix
+let match_nothing frag accept = None
+
+# make a matcher that takes in 3 arguments
+# v: 'a
+# frag: 'a list
+# acceptor: 'a -> 'a option
+let match_value v frag accept = 
+  match frag with
+    | [] -> None
+    | n::tail -> if n == v then accept tail else None
+    ;;
+
+# suppose we had two matchers, and we wanted to use them both in sequence
+# append_matcher takes two matchers and returns a matcher
+let append_matchers matcher1 matcher2 frag accept =
+  matcher1 frag (fun s -> matcher2 s accept)
+  ;;
+
+# using the append_matchers function that we wrote, write a function
+# that returns a matcher that matches a list of values
+let make_append_matchers matcher_value lv = 
+  let rec mam = function
+    | [] -> match_empty
+    | head::tail -> append_matchers (matcher_maker head) (mam tail)
+  in mam lv
+
+
+
+
+(example 1)
+mailbox-list  = mailbox *("," mailbox)   <--- * means 0 or more,() is grouping
+mailbox       = addr-spec / angle-addr   <--- / is OR (just like |)
+angle-addr    = "<" addr-spec ">"
+addr-spec     = local-part "@" domain
+local-part    = dot-atom / quoted-string
+domain        = dot-atom
+quoted-string = DQUOTE *(qcontent) DQUOTE
+qcontent      = qtext / quoted-pair
+qtext         = atext / "[" / "]" / "," / "<" / ">" / "@" / "."
+quoted-pair   = "\" anychar
+anychar       = qtext / "\" / DQUOTE
+dot-atom      = 1*atext *("." 1*atext)
+atext         = ALPHA / DIGIT / "*" / "+" / "-" / "/"
+
+Note:
+The operator "*" preceding an element indicates repetition.  The full
+   form is:
+
+         <a>*<b>element
+
+   where <a> and <b> are optional decimal values, indicating at least
+   <a> and at most <b> occurrences of the element.
+
+   Default values are 0 and infinity so that *<element> allows any
+   number, including zero; 1*<element> requires at least one;
+   3*3<element> allows exactly 3; and 1*2<element> allows one or two.
+
+So 1*atext means 1 or more atext (same as {atext}+)
+
+Q1: what are the tokens of this grammar? (Note tokens == terminal symbols)
+DQUOTE, ALPHA, DIGIT and everything with double quotes
+
+Q2: what are the nonterminals of this grammar?
+All lowercase symbols
+
+Q3: Prove that the grammar is unambiguous.
+TODO
+
+(example 2)
+msg-id          = "<" id-left "@" id-right ">"
+id-left         = dot-atom-text
+id-right        = dot-atom-text / no-fold-literal
+no-fold-literal = msg-id
+dot-atom-text   = 1*atext *("." 1*atext)
+atext           = "a" / "b" / "c" / "d" / "@"
+
+Q1: Prove the grammar is ambiguous
+    
+   "<"  id-left        "@"        id-right                  ">"
+    |      |            |            |                       |
+   "<" dot-atom-text   "@"      dot-atom-text               ">" 
+    |    |              |      /     |      \                |
+   "<" atext           "@"  atext  atext   atext            ">"
+    |    |              |     |      |      |                |
+    <    a              @     b      @      c                >
+    |    |              |     |      |      |                |
+   "<" atext          atext atext   "@"   atext             ">"
+    |    \             /     /       |      |                |
+   "<"        dot-atom-text         "@" dot-atom-text       ">"
+    |               |                |      |                |
+   "<"          id-left             "@"  id-right           ">"
+
+
+Q2: Modify the grammar to make it unambiguous
+Make sure id-right cannot contain @
+
+
+Q3: draw syntax diagram for the unmodified grammar
+oval for terminals, rectable for nonterminals
+
+
+===== end grammar =====
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,9 @@
+1. https://stackoverflow.com/questions/21370003/checking-if-one-element-is-equal-to-any-element-in-a-list-in-ocaml
+2. From math, we know a=b iff a is subset of b AND b is subset of a
+3. List module has append that concatenate two lists (https://caml.inria.fr/pub/docs/manual-ocaml/libref/List.html).
+4. List module also has mem function that checks if an element exists in a list. 
+5. Just remove element that is NOT in the other list
+6. Asked Xinyu what computed fixed point means during office hours.
+7. Very tricky. Used the hint code for guidance (https://github.com/CS131-TA-team/UCLA_CS131_CodeHelp/blob/master/OCaml/hw1/python_hint.py). But it seemed hint code had a bug. Somehow computed_fixed_point only recursed up to 2 times. Took me a while but I figured that rules variable is empty after the first iteration of get_reachable_symbols. Needed to restore the original rules before feeding it back to get_reachable_symbols again. OCaml had this weird behavior when inferring the types, so I couldn't just add parameter to get_reachable_symbols for original symbols, so instead I moved get_reachable_symbols function inside filter_reachable function.
+
+
