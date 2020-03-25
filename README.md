@@ -8,6 +8,6 @@
 | HW4           | 100/100       |                                 |
 | HW5           | 96/100        | failed 2 test cases             |
 | Project       | 100/100       |                                 |
-| HW6           | ?             |                                 |
+| HW6           | 95/100        |                                 |
 | Midterm       | 87/100        |                                 |
 | Final         | 116/180       |                                 |
