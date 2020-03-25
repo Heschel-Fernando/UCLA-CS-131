@@ -10,4 +10,4 @@
 | Project       | 100/100       |                                 |
 | HW6           | ?             |                                 |
 | Midterm       | 87/100        |                                 |
-| Final         | ?             |                                 |
+| Final         | 116/180       |                                 |
